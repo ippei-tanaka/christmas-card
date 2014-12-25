@@ -10,31 +10,14 @@
     <link rel="stylesheet" type="text/css" href="css/skeleton.css"/>
     <style>
         .section {
-            margin: 20px 0 0;
+            margin: 20px 0;
         }
 
         #messageTextArea {
             min-height: 170px;
         }
-
-        #EmailMessage {
-            border: #ccc 1px solid;
-            border-radius: 5px;
-            padding: 20px;
-            background: #f0f0f0;
-            margin-bottom: 20px;
-
-            -ms-word-break: break-all;
-
-            /* Be VERY careful with this, breaks normal words wh_erever */
-            word-break: break-all;
-
-            /* Non standard for webkit */
-            word-break: break-word;
-
-            -webkit-hyphens: auto;
-            -moz-hyphens: auto;
-            hyphens: auto;
+        #Wrapper {
+            margin: 30px auto;
         }
     </style>
     <script>
@@ -55,7 +38,7 @@
     </script>
 </head>
 <body ng-controller="makerController">
-<div class="container">
+<div class="container" id="Wrapper">
     <section class="section">
         <div class="row">
             <div class="column">
@@ -101,9 +84,7 @@
     <section class="section" ng-show="params">
         <div class="row">
             <h5>Copy the link to your email</h5>
-            <div id="EmailMessage" class="u-full-width" ng-model="emailTemplate">
-                http://{{ host }}/?{{ params }}
-            </div>
+            <div><input type="text" name="link" class="u-full-width" value="http://{{ host }}/?{{ params }}" onclick="this.focus();this.select()" readonly="readonly" /></div>
         </div>
     </section>
 </div>
