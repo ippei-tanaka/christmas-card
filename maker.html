@@ -21,6 +21,11 @@
         #Wrapper {
             margin: 30px auto;
         }
+        .note {
+            color: #c80016;
+            display: block;
+            font-size: 13px;;
+        }
     </style>
     <script>
         angular.module('maker', []).controller('makerController', function ($scope) {
@@ -49,7 +54,7 @@
                 <h5>Input your message and set the music</h5>
                 <form>
                     <div class="row">
-                        <label for="messageTextArea">Message* (max 2000 characters)</label>
+                        <label for="messageTextArea">Message* (max 2000 characters) <span class="note">Add Line-breaks to add pauses between sentences</span></label>
                         <textarea ng-model="message" class="u-full-width" placeholder="Dear..." ng-model="message"
                                   ng-change="onChange()" ng-maxlength="2000"
                                   id="messageTextArea"></textarea>
@@ -80,7 +85,7 @@
     <section class="section" ng-show="params">
         <div class="row">
             <h5>Check how your Christmas card looks and sounds</h5>
-            <p><a target="_blank" class="button-primary" href="index.html?{{ params }}">Check your Christmas card</a></p>
+            <p><a target="_blank" class="button-primary" href="index.html?{{ params }}">Preview your Christmas card</a></p>
         </div>
     </section>
     <section class="section" ng-show="params">
