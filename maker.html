@@ -12,9 +12,11 @@
         .section {
             margin: 20px 0;
         }
-
         #messageTextArea {
             min-height: 170px;
+        }
+        #EndingInput {
+            min-height: 100px;
         }
         #Wrapper {
             margin: 30px auto;
@@ -54,10 +56,10 @@
                     </div>
                     <div class="row">
                         <div class="columns">
-                            <label for="endingInput">Ending (Optional)</label>
-                            <input ng-model="ending" class="u-full-width" type="text" placeholder="Merry Christmas!"
+                            <label for="EndingInput">Ending (Optional)</label>
+                            <textarea ng-model="ending" class="u-full-width" placeholder="Merry Christmas!"
                                    ng-change="onChange()"
-                                   id="endingInput" ng-model="ending">
+                                   id="EndingInput" ng-model="ending"></textarea>
                         </div>
                     </div>
                     <div class="row">
