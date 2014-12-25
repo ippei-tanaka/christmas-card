@@ -1,9 +1,10 @@
-define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements',
+define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'UrlUtil',
         'Stage', 'Light', 'Tree', 'MessageWindow', 'Speech', 'Music'],
-    function (_, createjs, $, elms,
+    function (_, createjs, $, elms, UrlUtil,
               Stage, Light, Tree, MessageWindow, Speech, Music) {
 
         var Tween = createjs.Tween,
+            UrlParameters = UrlUtil.getUrlVars(),
 
             Controller = function () {
                 this.stage = new Stage(elms.$canvas);
@@ -11,9 +12,9 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements',
                     maxWidth: this.stage.getWidth() - 20,
                     maxHeight: this.stage.getHeight() - 20
                 });
-                this.message = "Dear Sam,\n\nHave a holy day, eee\neeeeeee\neeeeeee\n\nIppei";
-                this.music = 'oh-holy-night';
-                this.lastParagraph = "Merry Chrismas";
+                this.message = decodeURIComponent(UrlParameters['message']) || "Love, joy and peace are the ingredients for a wonderful Christmas...\nI hope you find them all this festive season...";
+                this.music = decodeURIComponent(UrlParameters['music']) === '1' ? 'we-wish-you' : UrlParameters['music'] === '2' ?  'oh-holy-night' : null;
+                this.ending = decodeURIComponent(UrlParameters['ending']) || "Have a Merry Christmas!";
                 this.paragraphs = _(this.message.split("\n")).map(function (paragraph) {
                     return paragraph.trim();
                 });
@@ -41,8 +42,8 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements',
             };
 
         Controller.prototype.start = function () {
-            var jObj = $({}),
-                musicPromise = Music.load(this.music);
+            var jObj = $({});
+                musicPromise = this.music ? Music.load(this.music) : null;
 
             jObj
                 .queue(_(function (next) {
@@ -53,10 +54,14 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements',
 
                 }).bind(this))
                 .queue(_(function (next) {
-                    musicPromise.done(function () {
-                        Music.play();
+                    if (musicPromise) {
+                        musicPromise.done(function () {
+                            Music.play();
+                            next();
+                        });
+                    } else {
                         next();
-                    });
+                    }
                 }).bind(this))
                 .delay(2000);
 
@@ -75,14 +80,14 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements',
                     .delay(1000);
             }).bind(this));
 
-            if (this.lastParagraph) {
+            if (this.ending) {
                 jObj
                     .delay(1000)
                     .queue(_(function (next) {
                         $.when(
-                            this.messageWindow.showSingleParagraph(this.lastParagraph)
+                            this.messageWindow.showSingleParagraph(this.ending)
                         ).done(next);
-                        Speech.speak(this.lastParagraph)
+                        Speech.speak(this.ending)
                     }).bind(this))
                     .delay(1000);
             }

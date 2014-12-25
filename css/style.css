@@ -67,7 +67,7 @@ body {
     background-color: #2c1c10;
 }
 #BackGroundImage {
-    background-image: url(img/paper-pattern.jpg);
+    background-image: url(../img/paper-pattern.jpg);
     background-repeat: repeat;
     background-position: 0 0;
     opacity: 0.5;
