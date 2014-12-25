@@ -59,6 +59,7 @@ html {
 body {
     height: 100%;
     font-family: 'Lora', serif;
+    overflow: hidden;
 }
 #BackGround {
     width: 100%;
@@ -93,7 +94,7 @@ body {
 }
 .copyright-link {
     font-size: 14px;
-    color: #ffffff;
+    color: #000;
     text-decoration: none;
 }
 .copyright-link:hover {

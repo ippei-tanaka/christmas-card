@@ -2,16 +2,13 @@ define('Star', ['underscore', 'createjs', 'ImageLoader'], function (_, createjs,
 
     var Star = function () {
 
-        createjs.Bitmap.call(this, ImageLoader.getImage('paper-pattern'));
-
-        this._maskBitmap = new createjs.Bitmap(ImageLoader.getImage('star-image'));
+        createjs.Bitmap.call(this, ImageLoader.getImage('star-image'));
 
         this.filters = [
-            new createjs.AlphaMaskFilter(this._maskBitmap.image),
             new createjs.ColorFilter(1, 1, 1, 1, 0, -20, -60, 0)
         ];
 
-        this.cache(0, 0, this._maskBitmap.image.width, this._maskBitmap.image.height);
+        this.cache(0, 0, this.image.width, this.image.height);
     };
 
     Star.prototype = Object.create(createjs.Bitmap.prototype);
@@ -20,7 +17,12 @@ define('Star', ['underscore', 'createjs', 'ImageLoader'], function (_, createjs,
     //----------------------------
     //----------------------------
 
-    Star.prototype.update = function () {
+    Star.prototype.getWidth = function () {
+        return this.image.width;
+    };
+
+    Star.prototype.getHeight = function () {
+        return this.image.height;
     };
 
     return Star

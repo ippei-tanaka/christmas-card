@@ -8,17 +8,17 @@ define('ImageLoader', ['underscore', 'jquery', 'createjs'], function (_, $, crea
             },
             {
                 id: 'stem-image',
-                src: './svg/stem.svg',
+                src: './img/stem.png',
                 type: createjs.LoadQueue.IMAGE
             },
             {
                 id: 'leafs-image',
-                src: './svg/leafs.svg',
+                src: './img/leafs.png',
                 type: createjs.LoadQueue.IMAGE
             },
             {
                 id: 'star-image',
-                src: './svg/star.svg',
+                src: './img/star.png',
                 type: createjs.LoadQueue.IMAGE
             }
         ];

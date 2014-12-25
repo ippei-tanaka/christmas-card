@@ -34,15 +34,5 @@ define('Stage', ['underscore', 'createjs', 'Common$Elements'], function (_, crea
 
     //----------------------------
 
-
-    Stage.prototype.update = function () {
-        createjs.Stage.prototype.update.call(this, arguments);
-        _(this.children).each(function (child) {
-            if (child) {
-                child.update();
-            }
-        });
-    };
-
     return Stage
 });

@@ -20,29 +20,22 @@ define('Light', ['underscore', 'createjs', 'Event', 'ImageLoader'], function (_,
 
         this.cache(0, 0, this._maskBitmap.image.width, this._maskBitmap.image.height);
 
-        this.scaleX = 0.2;
-        this.scaleY = 0.2;
+        this.scaleX = 0.3 * args.scale;
+        this.scaleY = 0.3 * args.scale;
     };
 
     Light.prototype = Object.create(createjs.Shape.prototype);
     Light.prototype.constructor = Light;
 
     //----------------------------
-
-
     //----------------------------
 
-    Light.prototype.onFadeOut = function (callback) {
-        this._event.on('fadeout', callback);
-        return this;
+    Light.prototype.getWidth = function () {
+        return this._maskBitmap.image.width;
     };
 
-    Light.prototype.update = function () {
-        if (this.alpha > 0) {
-            this.alpha += this._dAlpha;
-        } else {
-            this._event.fire('fadeout');
-        }
+    Light.prototype.getHeight = function () {
+        return this._maskBitmap.image.height;
     };
 
     return Light
