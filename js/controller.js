@@ -44,17 +44,17 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
                     });
                 }
 
-                this.$speechButton = $('#SpeechButton');
-                this.$speechButton.show();
-                this.$speechButton.on('click', function (event) {
-                    if (Speech.getVolume() === 0) {
-                        $(event.currentTarget).find('.cross').hide();
-                        Speech.setDefaultVolume();
-                    } else {
-                        $(event.currentTarget).find('.cross').show();
-                        Speech.setZeroVolume();
-                    }
-                });
+                //this.$speechButton = $('#SpeechButton');
+                //this.$speechButton.show();
+                //this.$speechButton.on('click', function (event) {
+                //    if (Speech.getVolume() === 0) {
+                //        $(event.currentTarget).find('.cross').hide();
+                //        Speech.setDefaultVolume();
+                //    } else {
+                //        $(event.currentTarget).find('.cross').show();
+                //        Speech.setZeroVolume();
+                //    }
+                //});
             };
 
         Controller.prototype.start = function () {
