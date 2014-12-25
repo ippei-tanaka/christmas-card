@@ -83,20 +83,61 @@ body {
     position: relative;
     z-index: 10;
 }
-#Overlay {
+#Copyright {
     position: absolute;
     z-index: 30;
-    bottom: 0;
-    right: 0;
+    bottom: 10px;
+    left: 15px;
 }
-.copyright {
-    padding: 15px;
+
+.copyright-list {
+    font-size: 10px;
+    color: #111;
+    padding-bottom: 5px;
 }
-.copyright-link {
-    font-size: 14px;
-    color: #000;
+.copyright-list a {
+    color: #999;
     text-decoration: none;
 }
 .copyright-link:hover {
     text-decoration: underline;
+}
+
+
+#Menu {
+    position: absolute;
+    z-index: 40;
+    top: 15px;
+    left: 10px;
+}
+#Menu {
+    list-style: none;
+}
+.menu-list {
+    display: inline;
+}
+#Menu button {
+    background-color: transparent;
+    border: 0;
+    vertical-align: top;
+    position: relative;
+    cursor: pointer;
+    outline: none;
+}
+#Menu button:hover {
+    opacity: 0.5;
+}
+.note path,
+.voice path {
+    fill: #ffffff;
+}
+
+.cross path {
+    fill: #884444;
+}
+.cross {
+    position: absolute;
+    top: 1px;
+    left: 6px;
+    display: none;
 }

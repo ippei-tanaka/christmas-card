@@ -22,6 +22,7 @@ define('Light', ['underscore', 'createjs', 'Event', 'ImageLoader'], function (_,
 
         this.scaleX = 0.3 * args.scale;
         this.scaleY = 0.3 * args.scale;
+        //this.rotation = args.rotation;
     };
 
     Light.prototype = Object.create(createjs.Shape.prototype);

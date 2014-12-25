@@ -46,7 +46,8 @@ define('Tree', ['underscore', 'createjs', 'Leafs', 'Stem', 'Star', 'Light', 'Cre
                 colour: this._generateRandomColourForTree(),
                 radius: Math.random() * 6 + 5,
                 alpha: Math.random() * 0.4 + 0.3,
-                scale: Math.random() * 0.5 + 0.5
+                scale: Math.random() * 0.5 + 0.5,
+                rotation: Math.random() * 360
             });
 
             light.set(CreateJsUtil.getRandomPoint(this, this.leafs));
@@ -54,12 +55,12 @@ define('Tree', ['underscore', 'createjs', 'Leafs', 'Stem', 'Star', 'Light', 'Cre
             this.addChild(light);
 
             Tween.get(light, {loop: true})
-                .wait(500 * Math.random() + 200)
+                .wait(1000 * Math.random() + 500)
                 .to({alpha: 0}, 0)
-                .wait(100 * Math.random() + 100)
+                .wait(1000 * Math.random() + 300)
                 .to({alpha: 1}, 0)
                 .call(_(function () {
-                    if (Math.random() > 0.5) {
+                    if (Math.random() > 0.8) {
                         this.removeChild(light);
                     }
                 }).bind(this));

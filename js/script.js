@@ -4,11 +4,12 @@ requirejs.config({
         'underscore': '//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.7.0/underscore-min',
         'createjs': '//code.createjs.com/easeljs-0.8.0.min',
         'tweenjs': '//code.createjs.com/tweenjs-0.6.0.min',
-        'preloadjs': '//code.createjs.com/preloadjs-0.6.0.min'
+        'preloadjs': '//code.createjs.com/preloadjs-0.6.0.min',
+        'soundjs': '//code.createjs.com/soundjs-0.6.0.min'
     },
     shim: {
         'createjs': {
-            deps: ['preloadjs', 'tweenjs'],
+            deps: ['preloadjs', 'tweenjs', 'soundjs'],
             exports: 'createjs'
         }
     }

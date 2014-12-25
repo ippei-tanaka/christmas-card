@@ -31,6 +31,28 @@ define('MessageWindow', ['underscore', 'jquery', 'createjs', 'Tree', 'MessagePar
             return this._height;
         };
 
+        MessageWindow.prototype.showSingleParagraph = function (text) {
+            var paragraph = new MessageParagraph({
+                    message: text
+                }),
+                deferred = $.Deferred();
+
+            paragraph.lineWidth = this.getWidth();
+            paragraph.y = (this.getHeight() - paragraph.getHeight()) / 2;
+            paragraph.alpha = 0;
+
+            createjs.Tween.get(paragraph)
+                .to({alpha: 1}, 400)
+                .call(_(function () {
+                    deferred.resolve();
+                }).bind(this));
+
+            this._innerContainer.removeAllChildren();
+            this._innerContainer.addChild(paragraph);
+
+            return deferred.promise();
+        };
+
         MessageWindow.prototype.releaseParagraph = function (text) {
             var paragraph = new MessageParagraph({
                     message: text

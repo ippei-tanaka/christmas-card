@@ -1,7 +1,7 @@
 define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements',
-        'Stage', 'Light', 'Tree', 'MessageWindow'],
+        'Stage', 'Light', 'Tree', 'MessageWindow', 'Speech', 'Music'],
     function (_, createjs, $, elms,
-              Stage, Light, Tree, MessageWindow) {
+              Stage, Light, Tree, MessageWindow, Speech, Music) {
 
         var Tween = createjs.Tween,
 
@@ -12,6 +12,11 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements',
                     maxHeight: this.stage.getHeight() - 20
                 });
                 this.message = "Dear Sam,\n\nHave a holy day, eee\neeeeeee\neeeeeee\n\nIppei";
+                this.music = 'oh-holy-night';
+                this.lastParagraph = "Merry Chrismas";
+                this.paragraphs = _(this.message.split("\n")).map(function (paragraph) {
+                    return paragraph.trim();
+                });
 
                 this.messageWindow = new MessageWindow({
                     width: this.tree.getWidth(),
@@ -21,29 +26,73 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements',
                 this.stage.addChild(this.tree);
                 this.stage.addChild(this.messageWindow);
 
-                this.tree.alpha = 0;
+                this.$musicButton = $('#MusicButton');
+                //this.$speechButton = $('#SpeechButton');
+
+                this.$musicButton.on('click', function (event) {
+                    if (Music.getVolume() === 0) {
+                        $(event.currentTarget).find('.cross').hide();
+                        Music.setDefaultVolume();
+                    } else {
+                        $(event.currentTarget).find('.cross').show();
+                        Music.setVolume(0);
+                    }
+                });
             };
 
         Controller.prototype.start = function () {
-            $({})
+            var jObj = $({}),
+                musicPromise = Music.load(this.music);
+
+            jObj
                 .queue(_(function (next) {
+                    this.tree.alpha = 0;
                     Tween.get(this.tree)
-                        .to({alpha: 1}, 1500)
+                        .to({alpha: 1}, 3000)
                         .call(next);
+
                 }).bind(this))
                 .queue(_(function (next) {
-                    this.messageWindow.releaseParagraph("32, asdfa, 234.")
-                        .done(next)
+                    musicPromise.done(function () {
+                        Music.play();
+                        next();
+                    });
                 }).bind(this))
-                .delay(500)
-                .queue(_(function (next) {
-                    this.messageWindow.releaseParagraph("dddd, asdfadddd, asdfadddd, asdfadddd, asdfadddd, asdfadddd, asdfa, asdf.")
-                        .done(next);
-                }).bind(this))
+                .delay(2000);
+
+            _(this.paragraphs).each(_(function (paragraph) {
+                jObj
+                    .queue(_(function (next) {
+                        $.when(
+                            this.messageWindow.releaseParagraph(paragraph)
+                        ).done(next);
+
+                        paragraph = paragraph.replace('\n', '').trim();
+                        if (paragraph) {
+                            Speech.speak(paragraph)
+                        }
+                    }).bind(this))
+                    .delay(1000);
+            }).bind(this));
+
+            if (this.lastParagraph) {
+                jObj
+                    .delay(1000)
+                    .queue(_(function (next) {
+                        $.when(
+                            this.messageWindow.showSingleParagraph(this.lastParagraph)
+                        ).done(next);
+                        Speech.speak(this.lastParagraph)
+                    }).bind(this))
+                    .delay(1000);
+            }
+
+            jObj
                 .queue(_(function (next) {
                     setInterval(_(function () {
                         this.tree.renderLight();
-                    }).bind(this), 30)
+                    }).bind(this), 150);
+                    setTimeout(next, 1000)
                 }).bind(this));
 
             createjs.Ticker.addEventListener("tick", _(this._reposition).bind(this));
