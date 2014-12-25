@@ -56,9 +56,9 @@
                     </div>
                     <div class="row">
                         <div class="columns">
-                            <label for="EndingInput">Ending (Optional)</label>
+                            <label for="EndingInput">Ending (Optional) (max 300 characters)</label>
                             <textarea ng-model="ending" class="u-full-width" placeholder="Merry Christmas!"
-                                   ng-change="onChange()"
+                                   ng-change="onChange()" ng-maxlength="300"
                                    id="EndingInput" ng-model="ending"></textarea>
                         </div>
                     </div>
