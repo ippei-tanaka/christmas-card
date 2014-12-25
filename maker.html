@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.3.5/angular.min.js"></script>
     <link href='//fonts.googleapis.com/css?family=Raleway:400,300,600' rel='stylesheet' type='text/css'>
-    <title>Christmas Card Maker</title>
+    <title>Christmas Card Link Generator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="css/normalize.css"/>
     <link rel="stylesheet" type="text/css" href="css/skeleton.css"/>
@@ -14,7 +14,7 @@
         }
 
         #messageTextArea {
-            min-height: 200px;
+            min-height: 170px;
         }
 
         #EmailMessage {
@@ -23,6 +23,18 @@
             padding: 20px;
             background: #f0f0f0;
             margin-bottom: 20px;
+
+            -ms-word-break: break-all;
+
+            /* Be VERY careful with this, breaks normal words wh_erever */
+            word-break: break-all;
+
+            /* Non standard for webkit */
+            word-break: break-word;
+
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            hyphens: auto;
         }
     </style>
     <script>
@@ -32,11 +44,11 @@
 
             $scope.music = 1;
 
-            $scope.submit = function () {
+            $scope.onChange = function () {
                 if ($scope.message && $scope.music) {
                     $scope.params = "message=" + encodeURIComponent($scope.message)
                     + "&music=" + encodeURIComponent($scope.music)
-                    + ($scope.ending ? "&ending=" + encodeURIComponent($scope.ending) : "");
+                    + "&ending=" + ($scope.ending ? encodeURIComponent($scope.ending) : "none");
                 } else {
                     $scope.params = "";
                 }
@@ -49,45 +61,50 @@
     <section class="section">
         <div class="row">
             <div class="column">
-                <h1>Christmas Card Maker</h1>
+                <h1>Christmas Card Link Generator</h1>
 
-                <form ng-submit="submit()">
+                <h5>Input your message and set the music</h5>
+                <form>
                     <div class="row">
-                        <label for="messageTextArea">Message</label>
+                        <label for="messageTextArea">Message* (max 2000 characters)</label>
                         <textarea ng-model="message" class="u-full-width" placeholder="Dear..." ng-model="message"
+                                  ng-change="onChange()" ng-maxlength="2000"
                                   id="messageTextArea"></textarea>
                     </div>
                     <div class="row">
                         <div class="columns">
-                            <label for="endingInput">Ending</label>
+                            <label for="endingInput">Ending (Optional)</label>
                             <input ng-model="ending" class="u-full-width" type="text" placeholder="Merry Christmas!"
+                                   ng-change="onChange()"
                                    id="endingInput" ng-model="ending">
                         </div>
                     </div>
                     <div class="row">
                         <div class="six columns">
-                            <label for="musicSelect">Music</label>
-                            <select class="u-full-width" id="musicSelect" ng-model="music">
+                            <label for="musicSelect">Music*</label>
+                            <select class="u-full-width" id="musicSelect" ng-model="music" ng-change="onChange()">
                                 <option value="1">We Wish you a Merry Christmas</option>
                                 <option value="2">Oh Holy Night</option>
                                 <option value="3">None</option>
                             </select>
                         </div>
                     </div>
-                    <input class="button-primary" value="Generate Link" type="Submit">
                 </form>
             </div>
         </div>
     </section>
     <section class="section" ng-show="params">
         <div class="row">
-            <h6>Add the link to your email!</h6>
-
+            <h5>Check how your Christmas card looks and sounds</h5>
+            <p><a target="_blank" class="button-primary" href="index.html?{{ params }}">Check your Christmas card</a></p>
+        </div>
+    </section>
+    <section class="section" ng-show="params">
+        <div class="row">
+            <h5>Copy the link to your email</h5>
             <div id="EmailMessage" class="u-full-width" ng-model="emailTemplate">
                 http://{{ host }}/?{{ params }}
             </div>
-
-            <p><a target="_blank" class="button-primary" href="index.html?{{ params }}">Check how your card looks</a></p>
         </div>
     </section>
 </div>

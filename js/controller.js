@@ -4,17 +4,24 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
               Stage, Light, Tree, MessageWindow, Speech, Music) {
 
         var Tween = createjs.Tween,
-            UrlParameters = UrlUtil.getUrlVars(),
 
             Controller = function () {
+                var message = UrlUtil.getUrlVars('message'),
+                    music = UrlUtil.getUrlVars('music'),
+                    ending = UrlUtil.getUrlVars('ending');
+
+                console.log(message);
+                console.log(music);
+                console.log(ending);
+
                 this.stage = new Stage(elms.$canvas);
                 this.tree = new Tree({
                     maxWidth: this.stage.getWidth() - 20,
                     maxHeight: this.stage.getHeight() - 20
                 });
-                this.message = decodeURIComponent(UrlParameters['message']) || "Love, joy and peace are the ingredients for a wonderful Christmas...\nI hope you find them all this festive season...";
-                this.music = decodeURIComponent(UrlParameters['music']) === '1' ? 'we-wish-you' : UrlParameters['music'] === '2' ?  'oh-holy-night' : null;
-                this.ending = decodeURIComponent(UrlParameters['ending']) || "Have a Merry Christmas!";
+                this.message = message || "Love, joy and peace are the ingredients for a wonderful Christmas...\nI hope you find them all this festive season...";
+                this.music = music === '1' ? 'we-wish-you' : music === '2' ?  'oh-holy-night' : null;
+                this.ending = ending === "none" ? false : ending ? ending : "Have a Merry Christmas!";
                 this.paragraphs = _(this.message.split("\n")).map(function (paragraph) {
                     return paragraph.trim();
                 });
@@ -27,16 +34,29 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
                 this.stage.addChild(this.tree);
                 this.stage.addChild(this.messageWindow);
 
-                this.$musicButton = $('#MusicButton');
-                //this.$speechButton = $('#SpeechButton');
+                if (this.music) {
+                    this.$musicButton = $('#MusicButton');
+                    this.$musicButton.show();
+                    this.$musicButton.on('click', function (event) {
+                        if (Music.getVolume() === 0) {
+                            $(event.currentTarget).find('.cross').hide();
+                            Music.setDefaultVolume();
+                        } else {
+                            $(event.currentTarget).find('.cross').show();
+                            Music.setZeroVolume();
+                        }
+                    });
+                }
 
-                this.$musicButton.on('click', function (event) {
-                    if (Music.getVolume() === 0) {
+                this.$speechButton = $('#SpeechButton');
+                this.$speechButton.show();
+                this.$speechButton.on('click', function (event) {
+                    if (Speech.getVolume() === 0) {
                         $(event.currentTarget).find('.cross').hide();
-                        Music.setDefaultVolume();
+                        Speech.setDefaultVolume();
                     } else {
                         $(event.currentTarget).find('.cross').show();
-                        Music.setVolume(0);
+                        Speech.setZeroVolume();
                     }
                 });
             };

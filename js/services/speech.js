@@ -5,21 +5,25 @@ define('Speech', ['underscore', 'jquery'], function (_, $) {
 
     return {
         speak: function (text) {
-            var fallbackSpeechSynthesis = window.getSpeechSynthesis(),
-                fallbackSpeechSynthesisUtterance = window.getSpeechSynthesisUtterance(),
+            var SpeechSynthesis = window.speechSynthesisPolyfill,
+                SpeechSynthesisUtterance = window.SpeechSynthesisUtterancePolyfill,
                 deferred = $.Deferred();
 
-            utterance = new fallbackSpeechSynthesisUtterance(text);
-
+            utterance = new SpeechSynthesisUtterance(text);
             utterance.lang = 'en-US';
             utterance.volume = volume;
             utterance.rate = 1.0;
             utterance.onend = function () {
                 deferred.resolve();
             };
-            fallbackSpeechSynthesis.speak(utterance);
+
+            SpeechSynthesis.speak(utterance);
 
             return deferred.promise();
+        },
+
+        setZeroVolume: function () {
+            this.setVolume(0);
         },
 
         setDefaultVolume: function () {

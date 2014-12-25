@@ -27,6 +27,10 @@ define('Music', ['underscore', 'jquery', 'createjs'], function (_, $, createjs) 
             }
         },
 
+        setZeroVolume: function () {
+            this.setVolume(0);
+        },
+
         setDefaultVolume: function () {
             this.setVolume(0.15);
         },

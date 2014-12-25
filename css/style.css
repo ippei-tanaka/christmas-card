@@ -123,6 +123,7 @@ body {
     position: relative;
     cursor: pointer;
     outline: none;
+    display: none;
 }
 #Menu button:hover {
     opacity: 0.5;
@@ -138,6 +139,6 @@ body {
 .cross {
     position: absolute;
     top: 1px;
-    left: 6px;
+    left: 7px;
     display: none;
 }
