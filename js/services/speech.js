@@ -5,8 +5,8 @@ define('Speech', ['underscore', 'jquery'], function (_, $) {
 
     return {
         speak: function (text) {
-            var SpeechSynthesis = window.speechSynthesisPolyfill,
-                SpeechSynthesisUtterance = window.SpeechSynthesisUtterancePolyfill,
+            var SpeechSynthesis = window.getSpeechSynthesis(),
+                SpeechSynthesisUtterance = window.getSpeechSynthesisUtterance(),
                 deferred = $.Deferred();
 
             utterance = new SpeechSynthesisUtterance(text);
