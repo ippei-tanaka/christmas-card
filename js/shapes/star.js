@@ -2,13 +2,13 @@ define('Star', ['underscore', 'createjs', 'ImageLoader'], function (_, createjs,
 
     var Star = function () {
 
-        createjs.Bitmap.call(this, ImageLoader.getImage('wooden-pattern'));
+        createjs.Bitmap.call(this, ImageLoader.getImage('paper-pattern'));
 
         this._maskBitmap = new createjs.Bitmap(ImageLoader.getImage('star-image'));
 
         this.filters = [
             new createjs.AlphaMaskFilter(this._maskBitmap.image),
-            new createjs.ColorFilter(1, 1, 1, 1, 60, 40, 0, 0)
+            new createjs.ColorFilter(1, 1, 1, 1, 0, -20, -60, 0)
         ];
 
         this.cache(0, 0, this._maskBitmap.image.width, this._maskBitmap.image.height);

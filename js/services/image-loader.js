@@ -3,10 +3,6 @@ define('ImageLoader', ['underscore', 'jquery', 'createjs'], function (_, $, crea
     var queue = new createjs.LoadQueue(true),
         files = [
             {
-                id: 'wooden-pattern',
-                src: './img/wooden-pattern.jpg'
-            },
-            {
                 id: 'paper-pattern',
                 src: './img/paper-pattern.jpg'
             },
