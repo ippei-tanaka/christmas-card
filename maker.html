@@ -42,8 +42,6 @@
 
             $scope.host = window.location.host;
 
-            $scope.music = 1;
-
             $scope.onChange = function () {
                 if ($scope.message && $scope.music) {
                     $scope.params = "message=" + encodeURIComponent($scope.message)
@@ -82,10 +80,11 @@
                     <div class="row">
                         <div class="six columns">
                             <label for="musicSelect">Music*</label>
-                            <select class="u-full-width" id="musicSelect" ng-model="music" ng-change="onChange()">
-                                <option value="1">We Wish you a Merry Christmas</option>
-                                <option value="2">Oh Holy Night</option>
-                                <option value="3">None</option>
+                            <select class="u-full-width" id="musicSelect" ng-init="music = 'we-wish-you'"
+                                    ng-model="music" ng-change="onChange()">
+                                <option value="we-wish-you">We Wish you a Merry Christmas</option>
+                                <option value="oh-holy-night">Oh Holy Night</option>
+                                <option value="none">None</option>
                             </select>
                         </div>
                     </div>

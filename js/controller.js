@@ -1,7 +1,7 @@
 define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'UrlUtil',
-        'Stage', 'Light', 'Tree', 'MessageWindow', 'Speech', 'Music'],
+        'Stage', 'Light', 'Tree', 'MessageWindow', 'Speech', 'Music', 'Snowflake'],
     function (_, createjs, $, elms, UrlUtil,
-              Stage, Light, Tree, MessageWindow, Speech, Music) {
+              Stage, Light, Tree, MessageWindow, Speech, Music, Snowflake) {
 
         var Tween = createjs.Tween,
 
@@ -10,17 +10,13 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
                     music = UrlUtil.getUrlVars('music'),
                     ending = UrlUtil.getUrlVars('ending');
 
-                console.log(message);
-                console.log(music);
-                console.log(ending);
-
                 this.stage = new Stage(elms.$canvas);
                 this.tree = new Tree({
                     maxWidth: this.stage.getWidth() - 20,
                     maxHeight: this.stage.getHeight() - 20
                 });
                 this.message = message || "Love, joy and peace are the ingredients for a wonderful Christmas...\nI hope you find them all this festive season...";
-                this.music = music === '1' ? 'we-wish-you' : music === '2' ?  'oh-holy-night' : null;
+                this.music = (music === 'we-wish-you' || !music) ? 'we-wish-you' : music === 'oh-holy-night' ?  'oh-holy-night' : null;
                 this.ending = ending === "none" ? false : ending ? ending : "Have a Merry Christmas!";
                 this.paragraphs = _(this.message.split("\n")).map(function (paragraph) {
                     return paragraph.trim();
@@ -120,8 +116,37 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
                     setTimeout(next, 1000)
                 }).bind(this));
 
+            createjs.Ticker.addEventListener("tick", _(this._renderShowflakes).bind(this));
             createjs.Ticker.addEventListener("tick", _(this._reposition).bind(this));
             createjs.Ticker.addEventListener("tick", this.stage);
+        };
+
+        Controller.prototype._renderShowflakes = function (event) {
+            this._snowflakes = this._snowflakes || [];
+            if (this._snowflakes.length < 30 && Math.random() > 0.9) {
+                var snowflake = new Snowflake({
+                    scale: Math.random() * 0.6 + 0.4,
+                    rotationSpeed: Math.random() * 8 + 3,
+                    alpha: Math.random() * 0.6 + 0.2
+                });
+                this.stage.addChildAt(snowflake, 0);
+                this._snowflakes.push(snowflake);
+                snowflake.x = Math.random() * (this.stage.getWidth()) + (- Math.random() * 200);
+                snowflake.y = -snowflake.getHeight();
+            }
+            _(this._snowflakes).each(function (snowflake) {
+                snowflake.rotate();
+                snowflake.y += 5;
+                snowflake.x += 1;
+            });
+            this._snowflakes = _(this._snowflakes).filter(_(function (snowflake) {
+                if (snowflake.y > this.stage.getHeight() + snowflake.getHeight()) {
+                    this.stage.removeChild(snowflake);
+                    return false;
+                } else {
+                    return true;
+                }
+            }).bind(this));
         };
 
         Controller.prototype._reposition = function (event) {

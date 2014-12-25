@@ -1,7 +1,8 @@
 define('Music', ['underscore', 'jquery', 'createjs'], function (_, $, createjs) {
 
     var music = '',
-        volume = 0.15,
+        defaultVolume = 0.35,
+        volume = defaultVolume,
         instance;
 
     return {
@@ -32,7 +33,7 @@ define('Music', ['underscore', 'jquery', 'createjs'], function (_, $, createjs) 
         },
 
         setDefaultVolume: function () {
-            this.setVolume(0.15);
+            this.setVolume(defaultVolume);
         },
 
         setVolume: function (vol) {

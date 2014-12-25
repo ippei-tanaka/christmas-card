@@ -4,7 +4,8 @@ define('ImageLoader', ['underscore', 'jquery', 'createjs'], function (_, $, crea
         files = [
             {
                 id: 'paper-pattern',
-                src: './img/paper-pattern.jpg'
+                src: './img/paper-pattern.jpg',
+                type: createjs.LoadQueue.IMAGE
             },
             {
                 id: 'stem-image',
@@ -19,6 +20,16 @@ define('ImageLoader', ['underscore', 'jquery', 'createjs'], function (_, $, crea
             {
                 id: 'star-image',
                 src: './img/star.png',
+                type: createjs.LoadQueue.IMAGE
+            },
+            {
+                id: 'snowfalke01-image',
+                src: './img/snowflake01.png',
+                type: createjs.LoadQueue.IMAGE
+            },
+            {
+                id: 'snowfalke02-image',
+                src: './img/snowflake02.png',
                 type: createjs.LoadQueue.IMAGE
             }
         ];
