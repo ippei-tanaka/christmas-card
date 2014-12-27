@@ -30,30 +30,37 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
                 this.stage.addChild(this.tree);
                 this.stage.addChild(this.messageWindow);
 
-                if (this.music) {
-                    this.$musicButton = $('#MusicButton');
-                    this.$musicButton.show();
-                    this.$musicButton.on('click', function (event) {
-                        if (Music.getVolume() === 0) {
-                            $(event.currentTarget).find('.cross').hide();
-                            Music.setDefaultVolume();
-                        } else {
-                            $(event.currentTarget).find('.cross').show();
-                            Music.setZeroVolume();
-                        }
-                    });
-                }
-
-
-                this.$playButton = $('#PlayButton');
-                this.$playButton.on('click', _(function (event) {
-                    $('#Splash').hide();
-                    this.start();
-                }).bind(this));
+                this._setupPlayButton();
             };
 
+        Controller.prototype._setupPlayButton = function () {
+            this.$playButton = $('#PlayButton');
+            this.$playButton.show();
+            this.$playButton.on('click', _(function () {
+                $('#Splash').hide();
+                this._setupMusicButton();
+                this.start();
+            }).bind(this));
+        };
+
+        Controller.prototype._setupMusicButton = function () {
+            if (this.music) {
+                this.$musicButton = $('#MusicButton');
+                this.$musicButton.show();
+                this.$musicButton.on('click', function (event) {
+                    if (Music.getVolume() === 0) {
+                        $(event.currentTarget).find('.cross').hide();
+                        Music.setDefaultVolume();
+                    } else {
+                        $(event.currentTarget).find('.cross').show();
+                        Music.setZeroVolume();
+                    }
+                });
+            }
+        };
+
         Controller.prototype.start = function () {
-            var jObj = $({});
+            var jObj = $({}),
                 musicPromise = this.music ? Music.load(this.music) : null;
 
             jObj

@@ -21,7 +21,7 @@ require(['jquery', 'ImageLoader'],
             ImageLoader.load().done(function () {
                 require(['Controller'],
                     function (Controller) {
-                        new Controller();//.start();
+                        new Controller();
                     });
             });
         });
