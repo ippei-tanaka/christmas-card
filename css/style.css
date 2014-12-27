@@ -103,6 +103,38 @@ body {
     text-decoration: underline;
 }
 
+#Splash {
+    position: absolute;
+    z-index: 50;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.35);
+    top: 0;
+    left: 0;
+}
+.play-button {
+    background-color: transparent;
+    border: 0;
+    outline: none;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    margin: -140px -100px;
+    cursor: pointer;
+    text-align: center;
+}
+.play-button:hover {
+    opacity: 0.6;
+}
+.play-button path {
+    fill: #fff;
+}
+.play-button-text {
+    display: block;
+    font-size: 30px;
+    padding-top: 10px;
+    color: #fff;
+}
 
 #Menu {
     position: absolute;
