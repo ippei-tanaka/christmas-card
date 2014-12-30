@@ -1,7 +1,7 @@
 define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'UrlUtil', 'easy-chain',
-        'Stage', 'Light', 'Tree', 'MessageWindow', 'Music', 'Snowflake'],
+        'Stage', 'Light', 'Tree', 'MessageWindow', 'Speech', 'Music', 'Snowflake'],
     function (_, createjs, $, elms, UrlUtil, EasyChain,
-              Stage, Light, Tree, MessageWindow, Music, Snowflake) {
+              Stage, Light, Tree, MessageWindow, Speech, Music, Snowflake) {
 
         var Tween = createjs.Tween,
 
@@ -40,9 +40,7 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
             this.$playButton.on('click', _(function () {
                 $('#Splash').hide();
                 this._setupMusicButton();
-                require(['Speech'], _(function (Speech) {
-                    this.start(Speech);
-                }).bind(this));
+                this.start();
             }).bind(this));
         };
 
@@ -62,7 +60,7 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
             }
         };
 
-        Controller.prototype.start = function (Speech) {
+        Controller.prototype.start = function () {
             var chain = new EasyChain(),
                 musicPromise = this.music ? Music.load(this.music) : null;
 
