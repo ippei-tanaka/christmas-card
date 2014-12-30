@@ -1,6 +1,6 @@
-define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'UrlUtil',
+define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'UrlUtil', 'easy-chain',
         'Stage', 'Light', 'Tree', 'MessageWindow', 'Speech', 'Music', 'Snowflake'],
-    function (_, createjs, $, elms, UrlUtil,
+    function (_, createjs, $, elms, UrlUtil, EasyChain,
               Stage, Light, Tree, MessageWindow, Speech, Music, Snowflake) {
 
         var Tween = createjs.Tween,
@@ -15,6 +15,7 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
                     maxWidth: this.stage.getWidth() - 20,
                     maxHeight: this.stage.getHeight() - 20
                 });
+                this.tree.alpha = 0;
                 this.message = message || "Love, joy and peace are the ingredients for a wonderful Christmas...\nI hope you find them all this festive season...";
                 this.music = (music === 'we-wish-you' || !music) ? 'we-wish-you' : music === 'oh-holy-night' ?  'oh-holy-night' : null;
                 this.ending = ending === "none" ? false : ending ? ending : "Have a Merry Christmas!";
@@ -60,18 +61,16 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
         };
 
         Controller.prototype.start = function () {
-            var jObj = $({}),
+            var chain = new EasyChain(),
                 musicPromise = this.music ? Music.load(this.music) : null;
 
-            jObj
-                .queue(_(function (next) {
-                    this.tree.alpha = 0;
+            chain
+                .single(_(function (next) {
                     Tween.get(this.tree)
                         .to({alpha: 1}, 3000)
                         .call(next);
-
                 }).bind(this))
-                .queue(_(function (next) {
+                .single(_(function (next) {
                     if (musicPromise) {
                         musicPromise.done(function () {
                             Music.play();
@@ -81,49 +80,50 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
                         next();
                     }
                 }).bind(this))
-                .delay(2000);
+                .wait(2000);
 
             _(this.paragraphs).each(_(function (paragraph) {
-                jObj
-                    .queue(_(function (next) {
-                        $.when(
-                            this.messageWindow.releaseParagraph(paragraph)
-                        ).done(next);
-
+                chain
+                    .single(_(function () {
                         paragraph = paragraph.replace('\n', '').trim();
                         if (paragraph) {
                             Speech.speak(paragraph)
                         }
+                        return this.messageWindow.releaseParagraph(paragraph);
                     }).bind(this))
-                    .delay(1000);
+                    .wait(1000);
             }).bind(this));
 
             if (this.ending) {
-                jObj
-                    .delay(1000)
-                    .queue(_(function (next) {
-                        $.when(
-                            this.messageWindow.showSingleParagraph(this.ending)
-                        ).done(next);
-                        Speech.speak(this.ending)
+                chain
+                    .wait(1000)
+                    .single(_(function () {
+                        Speech.speak(this.ending);
+                        return this.messageWindow.showSingleParagraph(this.ending);
                     }).bind(this))
-                    .delay(1000);
+                    .wait(1000);
             }
 
-            jObj
-                .queue(_(function (next) {
+            chain
+                .single(_(function (next) {
                     setInterval(_(function () {
                         this.tree.renderLight();
                     }).bind(this), 150);
-                    setTimeout(next, 1000)
-                }).bind(this));
+                    next();
+                }).bind(this))
+                .wait(1000)
+                .single(function () {
+                    console.log(2323);
+                });
 
-            createjs.Ticker.addEventListener("tick", _(this._renderShowflakes).bind(this));
+            chain.run();
+
+            createjs.Ticker.addEventListener("tick", _(this._renderSnowflakes).bind(this));
             createjs.Ticker.addEventListener("tick", _(this._reposition).bind(this));
             createjs.Ticker.addEventListener("tick", this.stage);
         };
 
-        Controller.prototype._renderShowflakes = function (event) {
+        Controller.prototype._renderSnowflakes = function (event) {
             this._snowflakes = this._snowflakes || [];
             if (this._snowflakes.length < 30 && Math.random() > 0.9) {
                 var snowflake = new Snowflake({
