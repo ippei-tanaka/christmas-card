@@ -1,4 +1,4 @@
-define('Speech', ['underscore', 'jquery'], function (_, $) {
+define('Speech', ['underscore', 'jquery', 'speech-synthesis'], function (_, $) {
 
     var volume = 1.0,
         utterance;
