@@ -110,11 +110,7 @@ define('Controller', ['underscore', 'createjs', 'jquery', 'Common$Elements', 'Ur
                         this.tree.renderLight();
                     }).bind(this), 150);
                     next();
-                }).bind(this))
-                .wait(1000)
-                .single(function () {
-                    console.log(2323);
-                });
+                }).bind(this));
 
             chain.run();
 
